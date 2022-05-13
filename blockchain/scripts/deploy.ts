@@ -3,15 +3,15 @@ import { ethers, run } from "hardhat";
 async function main() {
   // const NFToken = await ethers.getContractFactory("NFToken");
   // console.log("Deploying NFToken ERC721 token...");
-  // const token = await NFToken.deploy("Vasily Ivanovich", "erc721");
+  // const token = await NFToken.deploy("Vasily Ivanovich", "VI721");
 
   // await token.deployed();
   // console.log("NFToken deployed to:", token.address);
 
   // await run("verify", {
-  //   address: "0x8c2e0a2A038d071F6b0789cB1730A2D2c97e78AB",
+  //   address: "0xc57bcFf78d8f5E5c765CBE122da4Cdd206C79D1E",
   //   contract: "contracts/NFToken.sol:NFToken",
-  //   constructorArguments: ["Vasily Ivanovich", "erc721"],
+  //   constructorArguments: ["Vasily Ivanovich", "VI721"],
   // });
 
   // const NFTMarketplace = await ethers.getContractFactory("NFTMarketplace");
@@ -22,7 +22,7 @@ async function main() {
   // console.log("NFTMarketplace deployed to:", marketplace.address);
 
   await run("verify", {
-    address: "0x5226c1f52CB1C147BD404194B6c075A58B7d04C1",
+    address: "0xB4a9e712394633Abba8CC9F801FE8E363671bb60",
     contract: "contracts/NFTMarketplace.sol:NFTMarketplace",
   });
 }

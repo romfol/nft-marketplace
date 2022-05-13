@@ -18,7 +18,8 @@ export default function ReadNFTMarket(props: Props) {
   const abiJSON = require("abi/NFTMarketplace.json")
   const abi = abiJSON.abi
   const [items, setItems] = useState<[]>()
-  // console.log("items", items);
+  const [marketUpdated, setMarketUpdated] = useState<boolean>(false)
+  console.log("items", items);
   const { account, active, library } = useWeb3React<Web3Provider>()
 
   // const { data: itemsS } = useSWR([addressMarketContract, 'fetchActiveItems'], {
@@ -57,8 +58,18 @@ export default function ReadNFTMarket(props: Props) {
       }
     })
 
+    const сreateMarketItem = market.filters.MarketItemCreated()
+    market.on(сreateMarketItem, () => {
+      setMarketUpdated(!marketUpdated);
+    })
+
+    // remove listener when the component is unmounted
+    return () => {
+      market.removeAllListeners(сreateMarketItem)
+    }
+
     //called only when changed to active and account changed
-  }, [active, account])
+  }, [active, account, marketUpdated])
 
 
   async function buyInNFTMarket(event: React.FormEvent, itemId: BigNumber, price: BigNumber) {

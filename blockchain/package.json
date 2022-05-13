@@ -8,6 +8,7 @@
     "migrate-mumbai": "hardhat run scripts/deploy.ts --network mumbai",
     "migrate-rinkeby": "hardhat run scripts/deploy.ts --network rinkeby",
     "verify-rinkeby": "npx hardhat verify  0x8c2e0a2A038d071F6b0789cB1730A2D2c97e78AB Vasily erc721 --network rinkeby",
+    "verify-mumbai": "npx hardhat verify  0xc57bcFf78d8f5E5c765CBE122da4Cdd206C79D1E Vasily Ivanovich VI721 --network mumbai",
     "test": "",
     "test-coverage": ""
   },

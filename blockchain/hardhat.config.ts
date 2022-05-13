@@ -43,7 +43,7 @@ const config: HardhatUserConfig = {
       gasPrice: 40e9,
     },
     mumbai: {
-      url: "https://matic-testnet-archive-rpc.bwarelabs.com",
+      url: "https://rpc-mumbai.maticvigil.com/",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
@@ -53,7 +53,7 @@ const config: HardhatUserConfig = {
     currency: "USD",
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: process.env.POLYGONSCAN_API_KEY,
   },
 };
 
