@@ -124,10 +124,6 @@ export default function CreateItem() {
             price
         )
         setListingForSale(true)
-        // let listingPrice = await market.getListingPrice()
-        // listingPrice = listingPrice.toString()
-        // let transaction = await market.createToken(url, price, { value: listingPrice })
-        // await transaction.wait()
     }
 
     return (

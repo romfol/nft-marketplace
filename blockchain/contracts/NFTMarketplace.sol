@@ -54,6 +54,10 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         State state
     );
 
+    function setMarketOwnerFee(uint256 ownerFee) public onlyOwner {
+        marketOwnerKoef = ownerFee;
+    }
+
     function transferMarketOwnership(address newOwner)
         public
         virtual
@@ -66,11 +70,6 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         transferOwnership(newOwner);
     }
 
-    /**
-     * @dev create a MarketItem for NFT sale on the marketplace.
-     *
-     * List an NFT.
-     */
     function createMarketItem(
         address nftContract,
         uint256 tokenId,
@@ -96,9 +95,6 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
             "NFT must be approved to market"
         );
 
-        // change to approve mechanism from the original direct transfer to market
-        // IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
-
         emit MarketItemCreated(
             id,
             nftContract,
@@ -110,13 +106,6 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         );
     }
 
-    /**
-     * @dev delete a MarketItem from the marketplace.
-     *
-     * de-List an NFT.
-     *
-     * todo ERC721.approve can't work properly!! comment out
-     */
     function deleteMarketItem(uint256 itemId) public nonReentrant {
         require(itemId <= _itemCounter.current(), "id must <= item count");
         require(
@@ -148,19 +137,12 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         );
     }
 
-    /**
-     * @dev (buyer) buy a MarketItem from the marketplace.
-     * Transfers ownership of the item, as well as funds
-     * NFT:         seller    -> buyer
-     * value:       buyer     -> seller
-     * Fee:  contract  -> owner
-     */
     function createMarketSale(address nftContract, uint256 id)
         public
         payable
         nonReentrant
     {
-        MarketItem storage item = marketItems[id]; //should use storge!!!!
+        MarketItem storage item = marketItems[id]; //should use storage!!!!
         uint256 tokenId = item.tokenId;
         uint256 price = item.price;
         // uint256 marketOwnerValue = (msg.value * 100) / marketOwnerKoef;
@@ -191,29 +173,14 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         );
     }
 
-    /**
-     * @dev Returns all unsold market items
-     * condition:
-     *  1) state == Created
-     *  2) buyer = 0x0
-     *  3) still have approve
-     */
     function fetchActiveItems() public view returns (MarketItem[] memory) {
         return fetchHepler(FetchOperator.ActiveItems);
     }
 
-    /**
-     * @dev Returns only market items a user has purchased
-     * todo pagination
-     */
     function fetchMyPurchasedItems() public view returns (MarketItem[] memory) {
         return fetchHepler(FetchOperator.MyPurchasedItems);
     }
 
-    /**
-     * @dev Returns only market items a user has created
-     * todo pagination
-     */
     function fetchMyCreatedItems() public view returns (MarketItem[] memory) {
         return fetchHepler(FetchOperator.MyCreatedItems);
     }
@@ -224,10 +191,6 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         MyCreatedItems
     }
 
-    /**
-     * @dev fetch helper
-     * todo pagination
-     */
     function fetchHepler(FetchOperator _op)
         private
         view
@@ -253,12 +216,6 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         return items;
     }
 
-    /**
-     * @dev helper to build condition
-     *
-     * todo should reduce duplicate contract call here
-     * (IERC721(item.nftContract).getApproved(item.tokenId) called in two loop
-     */
     function isCondition(MarketItem memory item, FetchOperator _op)
         private
         view
